@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Appuntamento {
 	enum Grado {
@@ -58,10 +59,10 @@ public class Appuntamento {
 	}
 	
 	ArrayList<Appuntamento> apListData = new ArrayList<>();
-	public void ordinaPerData() {
-		apListData = (ArrayList)apList.clone();
+	public void ordinaPerData(boolean messaggio) {
+		apListData = (ArrayList<Appuntamento>)apList.clone();
 		// Selection Sort
-		for(int i=0; i < apListData.size() - 1; i++) {
+		for(int i=0; i < apListData.size()-1; i++) {
 			int minIndex = i;
             for (int j = i + 1; j < apListData.size(); j++) {
                 if (apListData.get(j).data.getData().compareTo(apListData.get(minIndex).data.getData()) < 0) {
@@ -74,14 +75,18 @@ public class Appuntamento {
                 apListData.set(minIndex, temporaneo);
             }
 		}
-		for(int i=0; i < apListData.size(); i++) {
-			System.out.println(i+" Appuntamento: \n"+apListData.get(i).data.toString()+" | Motivo: "+apListData.get(i).motivo+" | Grado: "+apListData.get(i).grado);
+		
+		if(messaggio == true) {
+			for(int i=0; i < apListData.size(); i++) {
+				System.out.println(i+" Appuntamento: \n"+apListData.get(i).data.toString()+" | Motivo: "+apListData.get(i).motivo+" | Grado: "+apListData.get(i).grado);
+			}
 		}
+
 	}
 	
 	public void ordinaPerImportanza(int ordine) {
 		ArrayList<Appuntamento> apListImportanza = new ArrayList<>();
-		apListImportanza = (ArrayList)apList.clone();
+		apListImportanza = (ArrayList<Appuntamento>)apList.clone();
 		if(ordine == 1) {
 			// Bubble Sort
 			boolean scambio;
@@ -122,25 +127,29 @@ public class Appuntamento {
 		}
 	}
 	
-	public Appuntamento ricercaBinaria(String data) {
-		ordinaPerData();
-		
-		int i = 0;
-		int fine = apListData.size()-1;
-		while(i <= fine) {
-			int indiceMedio = (i + fine) / 2;
-			Appuntamento appuntamentoMedio = apListData.get(indiceMedio);
-			int confronto = appuntamentoMedio.data.getData().compareTo(data);
-			
-			if (confronto == 0) {
-				return appuntamentoMedio;
-			} else if (confronto < 0) {
-				i = indiceMedio+1;
-			} else {
-				fine = indiceMedio-1;
-			}
+	public Appuntamento ricercaBinaria(List<Appuntamento> lista, Giorno giornoCercato) {
+	
+		if (lista.size() == 0) {
+			return null;
 		}
-		return null;
+		if (lista.size() == 1) {
+			if (lista.get(0).data.giorno.equals(giornoCercato)) {
+				return lista.get(0);
+			}
+			return null;
+		}
+		int posLastElem = lista.size()-1;
+		int meta = posLastElem/2;
+		Giorno giornoCorrente = lista.get(meta).data.giorno;
+		
+		if (giornoCorrente.equals(giornoCercato)) {
+			return lista.get(meta);
+		}
+		if(giornoCorrente.compareTo(giornoCercato) < 0) {
+			return ricercaBinaria(lista.subList(meta+1, posLastElem), giornoCercato);
+		} else {
+			return ricercaBinaria(lista.subList(0, meta+1), giornoCercato);
+		}
 	}
 }
 

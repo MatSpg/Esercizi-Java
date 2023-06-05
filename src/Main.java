@@ -97,7 +97,7 @@ public class Main implements ap{
 				
 			case 5:
 				System.out.println("Ricerca ordinata per Data");
-				appuntamento.ordinaPerData();
+				appuntamento.ordinaPerData(true);
 				break;
 				
 			case 6:
@@ -110,11 +110,12 @@ public class Main implements ap{
 				System.out.print("Anno: ");
 				int numAnno = input.nextInt(); 
 				
-				String stringa = numAnno+"-"+numMese+"-"+numGiorno;
-				Appuntamento risultatoRicerca = appuntamento.ricercaBinaria(stringa);
+				Giorno g = new Giorno(numGiorno, Giorno.Mese.values()[numMese], numAnno);
+				appuntamento.ordinaPerData(false);
+				Appuntamento risultatoRicerca = appuntamento.ricercaBinaria(appuntamento.apListData, g);
 				
 				if (risultatoRicerca != null) {
-					System.out.println("Risultato: " + risultatoRicerca);
+					System.out.println("Risultato:\n"+risultatoRicerca.data.toString()+" | Motivo: "+risultatoRicerca.motivo+" | Grado: "+risultatoRicerca.grado);
 				} else {
 					System.out.println("Nessun risultato.");
 				}

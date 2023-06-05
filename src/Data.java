@@ -15,7 +15,20 @@ public class Data {
 	}
 	
 	public String getData() {
-		return this.giorno.anno+"-"+this.giorno.mese.ordinal()+"-"+this.giorno.giorno;
+		String giornoFormat = String.format("%02d", this.giorno.giorno);
+		String meseFormat = String.format("%02d", this.giorno.mese.ordinal());
+		
+		return this.giorno.anno+"-"+meseFormat+"-"+giornoFormat;
+	}
+	
+	public boolean equals(Data data) {
+		if (this.giorno.giorno == data.giorno.giorno && 
+				this.giorno.anno == data.giorno.anno &&
+				this.giorno.mese == data.giorno.mese) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 
@@ -76,5 +89,33 @@ class Giorno {
 	
 	public String toString() {
 		return "Giorno: "+this.giorno+" | Mese: "+this.mese+" | Anno: "+this.anno;
+	}
+	
+	public boolean equals(Giorno g) {
+		return this.giorno == g.giorno && this.mese == g.mese && this.anno == g.anno;
+	}
+	
+	public int compareTo(Giorno g) {
+		if(this.anno > g.anno) {
+			return 1;
+		}
+		if(this.anno < g.anno) {
+			return -1;
+		}
+		
+		if(this.mese.ordinal() > g.mese.ordinal()) {
+			return 1;
+		}
+		if(this.mese.ordinal() < g.mese.ordinal()) {
+			return -1;
+		}
+		
+		if(this.giorno > g.giorno) {
+			return 1;
+		}
+		if(this.giorno < g.giorno) {
+			return -1;
+		}
+		return 0;
 	}
 }
